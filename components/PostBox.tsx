@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
+import Avatar from './Avatar';
 
 function PostBox() {
   const { data: session } = useSession();
@@ -7,7 +8,7 @@ function PostBox() {
   return (
     <form>
       <div className="flex items-center space-x-3">
-        {/* Avatar */}
+        <Avatar />
 
         <input
           disabled={!session}
