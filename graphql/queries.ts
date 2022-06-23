@@ -1,37 +1,36 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_POSTS = gql`
-query MyQuery {
-  getPostList {
-    id
-    created_at
-    body
-    image
-    title
-    subreddit_id
-    username
-    comments{
+  query MyQuery {
+    getPostList {
+      body
+      comments {
+        created_at
+        id
+        post_id
+        text
+        username
+      }
       created_at
       id
-      post_id
-      text
+      image
+      subreddit {
+        created_at
+        id
+        topic
+      }
+      title
+      subreddit_id
       username
-    }
-    subreddit{
-      created_at
-      id
-      topic
-
-    }
-    votes {
-      creted_at
-      id
-      post_id
-      upvote
-      username
+      votes {
+        created_at
+        id
+        post_id
+        upvote
+        username
+      }
     }
   }
-}
 `;
 
 export const GET_SUBREDDIT_BY_TOPIC = gql`
