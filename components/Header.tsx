@@ -33,7 +33,6 @@ function Header() {
         <ChevronDownIcon className="h-5 w-5" />
       </div>
 
-      {/* Search box */}
       <form className="flex flex-1 items-center space-x-2 rounded-sm border border-gray-200 bg-gray-100 px-3 py-1">
         <SearchIcon className="h-6 w-6 text-gray-400" />
         <input
@@ -44,7 +43,7 @@ function Header() {
         <button type="submit" hidden />
       </form>
 
-      <div className="hidden space-x-2 text-gray-500 lg:inline-flex ">
+      <div className="mx-5 hidden space-x-2 text-gray-500 lg:inline-flex ">
         <SparklesIcon className="icon" />
         <GlobeIcon className="icon" />
         <VideoCameraIcon className="icon" />
@@ -57,7 +56,7 @@ function Header() {
       <div className="ml-5 flex items-center lg:hidden">
         <MenuIcon className="icon" />
       </div>
-      {/* Sign/ Signout button */}
+      
       <div className="hidden cursor-pointer items-center space-x-2 border border-gray-100 p-2 lg:flex ">
         <div className="relative h-5 w-5 flex-shrink-0">
           <Image
