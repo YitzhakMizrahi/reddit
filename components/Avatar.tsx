@@ -1,14 +1,14 @@
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import React from 'react';
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import React from 'react'
 
 type Props = {
-  seed?: string;
-  large?: boolean;
-};
+  seed?: string
+  large?: boolean
+}
 
 function Avatar({ seed, large }: Props) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
 
   return (
     <div
@@ -17,13 +17,13 @@ function Avatar({ seed, large }: Props) {
       }`}
     >
       <Image
-        layout="fill"
+        layout='fill'
         src={`https://avatars.dicebear.com/api/open-peeps/${
           seed || session?.user?.name || 'placeholder'
         }.svg`}
       />
     </div>
-  );
+  )
 }
 
-export default Avatar;
+export default Avatar

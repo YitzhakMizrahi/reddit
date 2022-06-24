@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 const client = new ApolloClient({
   uri: 'https://yiwu.stepzen.net/api/quelling-quetzal/__graphql',
@@ -6,6 +6,6 @@ const client = new ApolloClient({
     Authorization: `ApiKey ${process.env.NEXT_PUBLIC_STEPZEN_KEY}`,
   },
   cache: new InMemoryCache(),
-});
+})
 
-export default client;
+export default client

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
 
 export const GET_ALL_POSTS = gql`
   query MyQuery {
@@ -31,7 +31,7 @@ export const GET_ALL_POSTS = gql`
       }
     }
   }
-`;
+`
 
 export const GET_ALL_POSTS_BY_TOPIC = gql`
   query MyQuery($topic: String!) {
@@ -64,7 +64,7 @@ export const GET_ALL_POSTS_BY_TOPIC = gql`
       }
     }
   }
-`;
+`
 
 export const GET_SUBREDDIT_BY_TOPIC = gql`
   query MyQuery($topic: String!) {
@@ -74,4 +74,4 @@ export const GET_SUBREDDIT_BY_TOPIC = gql`
       created_at
     }
   }
-`;
+`
