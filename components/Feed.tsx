@@ -19,12 +19,12 @@ function Feed({ topic }: Props) {
 
   const posts: Post[] = !topic ? data?.getPostList : data?.getPostListByTopic
 
-  if (loading)
-    return (
-      <div className="flex w-full items-center justify-center p-10 text-xl">
-        <Jelly size={50} color="#FF4501" />
-      </div>
-    )
+  // if (loading)
+  //   return (
+  //     <div className="flex w-full items-center justify-center p-10 text-xl">
+  //       <Jelly size={50} color="#FF4501" />
+  //     </div>
+  //   )
 
   return (
     <div className="mt-5 space-y-4">
