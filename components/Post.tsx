@@ -7,19 +7,30 @@ import {
   GiftIcon,
   ShareIcon,
 } from '@heroicons/react/outline'
-import React from 'react'
+import React, { useState } from 'react'
 import Avatar from './Avatar'
 import TimeAgo from 'react-timeago'
 import Link from 'next/link'
 import { Jelly } from '@uiball/loaders'
+import { useSession } from 'next-auth/react'
+import { toast } from 'react-hot-toast'
 
 type Props = {
   post: Post
   styleOnHover: Boolean
- 
 }
 
 function Post({ post, styleOnHover }: Props) {
+  const [vote, setVote] = useState<boolean>()
+  const { data: session } = useSession()
+
+  const upVote = async (isUpvote: boolean) => {
+    if (!session) {
+      toast("❗️ You'll need to sign in to Vote!")
+      return
+    }
+  }
+
   if (!post)
     return (
       <div className="flex w-full items-center justify-center p-10 text-xl">
@@ -29,12 +40,22 @@ function Post({ post, styleOnHover }: Props) {
 
   return (
     <Link href={`/post/${post?.id}`}>
-      <div className={`flex cursor-pointer rounded-md border border-gray-300 bg-white shdow-sm ${styleOnHover && "hover:border hover:border-gray-600"}`}>
+      <div
+        className={`flex cursor-pointer rounded-md border border-gray-300 bg-white shdow-sm ${
+          styleOnHover && 'hover:border hover:border-gray-600'
+        }`}
+      >
         {/* Votes */}
         <div className="flex flex-col items-center justify-start space-y-1 rounded-l-md bg-gray-50 p-4 text-gray-400">
-          <ArrowUpIcon className="voteButtons hover:text-red-400" />
+          <ArrowUpIcon
+            onClick={() => upVote(true)}
+            className="voteButtons hover:text-red-400"
+          />
           <p className="text-xs text-black font-bold">0</p>
-          <ArrowDownIcon className="voteButtons hover:text-blue-400" />
+          <ArrowDownIcon
+            onClick={() => upVote(false)}
+            className="voteButtons hover:text-blue-400"
+          />
         </div>
 
         <div className="p-3 pb-1">
