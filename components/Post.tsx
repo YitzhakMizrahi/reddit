@@ -73,9 +73,30 @@ function Post({ post, styleOnHover }: Props) {
     })
   }
 
-  if (!post)
+  const displayVotes = (data: any) => {
+    const votes: Vote[] = data?.getVotesByPostId
+    const displayNumber = votes?.reduce(
+      (total, vote) => (vote.upvote ? (total += 1) : (total -= 1)),
+      0
+    )
+
+    if (votes?.length === 0) return 0
+
+    if (displayNumber === 0) {
+      // Check last vote number
+      return votes[0]?.upvote ? 1 : -1
+    }
+
+    return displayNumber
+  }
+
+  if (!post || loading)
     return (
-      <div className="flex w-full items-center justify-center p-10 text-xl">
+      <div
+        className="flex w-full items-center justify-center p-10 text-xl"
+        aria-live="polite"
+        aria-busy={!post}
+      >
         <Jelly size={50} color="#FF4501" />
       </div>
     )
@@ -95,7 +116,7 @@ function Post({ post, styleOnHover }: Props) {
               vote && 'text-blue-400'
             }`}
           />
-          <p className="text-xs text-black font-bold">0</p>
+          <p className="text-xs text-black font-bold">{displayVotes(data)}</p>
           <ArrowDownIcon
             onClick={() => upVote(false)}
             className={`voteButtons hover:text-red-400 ${
