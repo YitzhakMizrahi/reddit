@@ -1,44 +1,55 @@
-import React, { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import Avatar from './Avatar';
-import { LinkIcon, PhotographIcon } from '@heroicons/react/outline';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useMutation } from '@apollo/client';
-import { ADD_POST, ADD_SUBREDDIT } from './../graphql/mutations';
-import { GET_SUBREDDIT_BY_TOPIC, GET_ALL_POSTS } from './../graphql/queries';
-import client from '../apollo-client';
-import toast from 'react-hot-toast';
+import React, { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import Avatar from './Avatar'
+import { LinkIcon, PhotographIcon } from '@heroicons/react/outline'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { useMutation } from '@apollo/client'
+import { ADD_POST, ADD_SUBREDDIT } from './../graphql/mutations'
+import {
+  GET_ALL_POSTS,
+  GET_SUBREDDITS_WITH_LIMIT,
+  GET_SUBREDDIT_BY_TOPIC,
+} from './../graphql/queries'
+import client from '../apollo-client'
+import toast from 'react-hot-toast'
 
 type FormData = {
-  postTitle: string;
-  postBody: string;
-  postImage: string;
-  subreddit: string;
-};
+  postTitle: string
+  postBody: string
+  postImage: string
+  subreddit: string
+}
 
 type Props = {
-  subreddit?: string;
-};
+  subreddit?: string
+}
 
 function PostBox({ subreddit }: Props) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   const [addPost] = useMutation(ADD_POST, {
-    refetchQueries: [GET_ALL_POSTS, 'getPostList'],
-  });
-  const [addSubreddit] = useMutation(ADD_SUBREDDIT);
+    refetchQueries: [
+      GET_ALL_POSTS,
+      'getPostList',
+      GET_SUBREDDIT_BY_TOPIC,
+      'getPostListByTopic',
+      GET_SUBREDDITS_WITH_LIMIT,
+      'getSubredditListLimit',
+    ],
+  })
+  const [addSubreddit] = useMutation(ADD_SUBREDDIT)
 
-  const [imageBoxOpen, setImageBoxOpen] = useState<boolean>(false);
+  const [imageBoxOpen, setImageBoxOpen] = useState<boolean>(false)
   const {
     register,
     setValue,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>()
 
   const onSubmit = handleSubmit(async (formData) => {
-    console.log(formData);
-    const notification = toast.loading('Creating new post...');
+    console.log(formData)
+    const notification = toast.loading('Creating new post...')
 
     try {
       // Query for the subreddit topic...
@@ -49,23 +60,29 @@ function PostBox({ subreddit }: Props) {
         variables: {
           topic: subreddit || formData.subreddit,
         },
-      });
+      })
 
-      const subredditExists = getSubredditListByTopic?.length > 0;
+      const subredditExists = getSubredditListByTopic?.length > 0
+      console.log(
+        'Subreddits found with topic: ',
+        formData.subreddit,
+        getSubredditListByTopic
+      )
+
       if (!subredditExists) {
+        console.log('Subreddit is new! -> creating a NEW subreddit!')
+       
         // create subreddit...
-        console.log('Subreddit is new! -> creating a NEW subreddit!');
-
         const {
           data: { insertSubreddit: newSubreddit },
         } = await addSubreddit({
           variables: {
             topic: formData.subreddit,
           },
-        });
+        })
 
-        console.log('Creating post...', formData);
-        const image = formData.postImage || '';
+        console.log('Creating post...', formData)
+        const image = formData.postImage || ''
 
         const {
           data: { insertPost: newPost },
@@ -73,19 +90,19 @@ function PostBox({ subreddit }: Props) {
           variables: {
             body: formData.postBody,
             image: image,
-            subreddit_id: newSubreddit,
+            subreddit_id: newSubreddit.id,
             title: formData.postTitle,
             username: session?.user?.name,
           },
-        });
+        })
 
-        console.log('New post added:', newPost);
+        console.log('New post added:', newPost)
       } else {
         // use existing subreddit
-        console.log('Using existing subreddit!');
-        console.log(getSubredditListByTopic);
+        console.log('Using existing subreddit!')
+        console.log(getSubredditListByTopic)
 
-        const image = formData.postImage || '';
+        const image = formData.postImage || ''
 
         const {
           data: { insertPost: newPost },
@@ -97,25 +114,25 @@ function PostBox({ subreddit }: Props) {
             title: formData.postTitle,
             username: session?.user?.name,
           },
-        });
+        })
 
-        console.log('New post added:', newPost);
+        console.log('New post added:', newPost)
       }
       //   After the post has been added!
-      setValue('postBody', '');
-      setValue('postImage', '');
-      setValue('postTitle', '');
-      setValue('subreddit', '');
+      setValue('postBody', '')
+      setValue('postImage', '')
+      setValue('postTitle', '')
+      setValue('subreddit', '')
 
       toast.success('New Post Created!', {
         id: notification,
-      });
+      })
     } catch (error) {
       toast.error('Whoops something went wrong!', {
         id: notification,
-      });
+      })
     }
-  });
+  })
 
   return (
     <form
@@ -209,7 +226,7 @@ function PostBox({ subreddit }: Props) {
         </div>
       )}
     </form>
-  );
+  )
 }
 
-export default PostBox;
+export default PostBox
