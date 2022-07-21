@@ -8,7 +8,7 @@ export default function SignIn({ providers }) {
           {Object.values(providers).map((provider) => (
             <div
               key={provider.name}
-              className="flex py-2 px-5 space-x-3 bg-white border-2 shadow-md rounded-xl justify-center h-5 min-h-full hover:bg-orange-100   text-md font-medium text-black transition hover:scale-110 hover:shadow-xl active:bg-orange-500 focus:outline-none focus:ring"
+              className="flex py-2 px-5 space-x-3 bg-white border-2 shadow-md rounded-xl justify-center h-5 min-h-full hover:bg-orange-100   text-md font-medium text-black transition hover:scale-105 hover:shadow-xl active:bg-orange-500 focus:outline-none focus:ring"
             >
               <img
                 layout="responsive"
